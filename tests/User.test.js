@@ -8,26 +8,35 @@ describe("User property tests", () => {
   test("username should be a string", () => {
     expect(typeof user.username).toBe("string");
   });
-  // test password
-  test("password is correct", () => {
-    expect(typeof user.password).toBe("string");
+  test("username should be correct", () => {
+    expect(user.username).toBe("Joe Bloggs");
   });
-
+  // test password
+  test("password is not public", () => {
+    expect(user.password).toBe(undefined);
+  });
   // test age
   test("Age property tests", () => {
     expect(typeof user.age).toBe("number");
   });
+  test("Age should be correct", () => {
+    expect(user.age).toBe(21);
+  });
 });
 
 // test login
-
-test("Log in User", () => {
-  expect(() => {
-    user.login(!user.password);
-  }).toThrowError("incorrect password");
-});
-
-// test logout
-test("User Loggs out", () => {
-  expect(user.loggedIn).toBe(false);
+describe("User authentication", () => {
+  test("Cannot log in with wrong password", () => {
+    expect(() => {
+      user.login("not password");
+    }).toThrowError("incorrect password");
+  });
+  test("Can log in with the right password", () => {
+    user.login("test123");
+    expect(user.loggedIn).toBe(true);
+  });
+  test("User Loggs out", () => {
+    user.logout();
+    expect(user.loggedIn).toBe(false);
+  });
 });
